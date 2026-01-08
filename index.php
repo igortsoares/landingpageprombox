@@ -9,39 +9,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prombox | Prêmios e Sorteios</title>
     
-    <!-- 
-        1. Tailwind CSS (Framework Visual)
-        Estamos usando via CDN para desenvolvimento rápido. 
-    -->
+    <!-- 1. Tailwind CSS (Framework Visual) -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- 
-        2. Font Awesome (Ícones)
-    -->
+    <!-- 2. Font Awesome (Ícones) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- 
-        3. Google Fonts (Tipografia)
-    -->
+    <!-- 3. Google Fonts (Tipografia) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- 
-        4. Nosso CSS Personalizado (CORREÇÃO DE CAMINHO)
-        Adicionei './' para indicar diretório atual e um código PHP '?v=time()'
-        para evitar que o navegador use cache antigo.
-    -->
+    <!-- 4. Nosso CSS Personalizado -->
     <link rel="stylesheet" href="./css/style.css?v=<?php echo time(); ?>">
+
+    <!-- 
+        5. ANIMAÇÃO DA FAIXA (Fixada aqui para garantir funcionamento)
+        Ajuste para Loop Infinito Sem Gaps
+    -->
+    <style>
+        @keyframes marquee-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* Move apenas metade (tamanho de 1 bloco de conteúdo) */
+        }
+        
+        .animate-marquee {
+            display: flex; /* Garante que o gap funcione */
+            width: max-content; /* Garante que a div tenha a largura total do conteúdo */
+            white-space: nowrap;
+            animation: marquee-scroll 50s linear infinite; /* Mais lento (50s) */
+        }
+
+        /* Pausa a animação quando passa o mouse */
+        .marquee-container:hover .animate-marquee {
+            animation-play-state: paused;
+        }
+    </style>
 </head>
 
-<!-- 
-    CORPO DA PÁGINA (BODY)
--->
-<body class="text-slate-800 antialiased flex flex-col min-h-screen bg-slate-50">
+<!-- CORPO DA PÁGINA (BODY) -->
+<body class="text-slate-800 antialiased flex flex-col min-h-screen bg-slate-50 font-['Inter']">
 
     <!-- 
         === HEADER (CABEÇALHO) ===
     -->
-    <header class="bg-dark text-white sticky top-0 z-50 shadow-lg">
+    <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-lg">
         <div class="container mx-auto px-4 h-16 flex items-center justify-between">
             
             <!-- ESQUERDA: Botão Menu Mobile & Logo -->
@@ -51,17 +61,37 @@
                 </button>
                 
                 <a href="#" class="flex items-center gap-2 group">
-                    <div class="w-8 h-8 bg-primary rounded flex items-center justify-center font-bold text-white group-hover:bg-primary-dark transition">P</div>
-                    <span class="text-xl font-black tracking-tight">PROMBOX</span>
+                    <img src="./assets/images/logo_prombox.png" alt="Logo Prombox" class="h-10 w-auto object-contain hover:opacity-90 transition-opacity">
                 </a>
             </div>
 
             <!-- CENTRO: Navegação Desktop -->
-            <nav class="hidden lg:flex gap-8 text-sm font-medium items-center">
-                <a href="#" class="text-primary font-bold">Início</a>
-                <a href="#sorteios" class="hover:text-primary transition">Sorteios</a>
-                <a href="#ganhadores" class="hover:text-primary transition">Ganhadores</a>
-                <a href="#termos" class="hover:text-primary transition">Termos de Uso</a>
+            <nav class="hidden lg:flex gap-8 text-sm font-medium items-center h-full">
+                <a href="#" class="text-primary font-bold hover:text-white transition">Início</a>
+                <a href="#resultados" class="hover:text-primary transition">Resultados</a>
+                
+                <!-- Item com Dropdown (Box Vantagens) -->
+                <div class="relative group h-full flex items-center">
+                    <a href="#" class="hover:text-primary transition flex items-center gap-1">
+                        Box Vantagens 
+                        <i class="fa-solid fa-chevron-down text-[10px] opacity-70 group-hover:text-primary"></i>
+                    </a>
+                    
+                    <div class="absolute top-16 left-0 w-56 bg-white rounded-b-xl shadow-2xl py-2 hidden group-hover:block border-t-4 border-primary text-left animate-fade-in-up">
+                        <a href="#faq" class="block px-6 py-3 text-slate-600 hover:bg-slate-50 hover:text-primary transition border-b border-slate-50 last:border-0 font-normal">
+                            Perguntas Frequentes
+                        </a>
+                        <a href="#termos" class="block px-6 py-3 text-slate-600 hover:bg-slate-50 hover:text-primary transition border-b border-slate-50 last:border-0 font-normal">
+                            Termos de Uso
+                        </a>
+                        <a href="#regulamento" class="block px-6 py-3 text-slate-600 hover:bg-slate-50 hover:text-primary transition font-normal">
+                            Regulamento
+                        </a>
+                    </div>
+                </div>
+
+                <a href="#clube" class="hover:text-primary transition">Clube Box</a>
+                <a href="#contato" class="hover:text-primary transition">Contato</a>
             </nav>
 
             <!-- DIREITA: Ações de Usuário -->
@@ -70,13 +100,58 @@
                     <i class="fa-solid fa-receipt"></i> Meus Números
                 </a>
                 
-                <button id="btn-login-open" class="bg-primary hover:bg-primary-dark text-white px-5 py-2 rounded-full text-sm font-bold transition flex items-center gap-2 shadow-lg shadow-teal-900/20">
+                <button id="btn-login-open" class="bg-primary hover:bg-teal-600 text-white px-5 py-2 rounded-full text-xs md:text-sm font-bold transition flex items-center gap-2 shadow-lg shadow-teal-900/20 transform hover:-translate-y-0.5">
                     <i class="fa-regular fa-user"></i>
-                    <span>Entrar</span>
+                    <span>Entrar ou Cadastrar</span>
                 </button>
             </div>
         </div>
     </header>
+
+    <!-- 
+        === FAIXA DE NOTÍCIAS (TICKER) ===
+        Conteúdo duplicado para garantir loop infinito sem gaps
+    -->
+    <div class="marquee-container bg-[#94014B] text-white py-2 overflow-hidden relative z-40 shadow-md border-b border-pink-700">
+        <!-- Adicionei 'padding-right' para manter o espaçamento no final do bloco -->
+        <div class="animate-marquee font-bold text-xs md:text-sm uppercase tracking-wider flex items-center gap-12 pr-12">
+            
+            <!-- BLOCO 1 (Original) -->
+            <span class="flex items-center gap-2">
+                <i class="fa-solid fa-trophy text-yellow-300"></i> Ganhador de Ontem: João Silva (SP) - R$ 5.000,00
+            </span>
+            <span class="flex items-center gap-2">
+                <i class="fa-solid fa-fire text-yellow-300"></i> Sorteio da Ranger Rover Velar: Faltam apenas 10% das cotas!
+            </span>
+            <span class="flex items-center gap-2">
+                <i class="fa-solid fa-star text-yellow-300"></i> Entre no nosso Grupo VIP e receba ofertas exclusivas
+            </span>
+            <span class="flex items-center gap-2">
+                <i class="fa-solid fa-clock text-yellow-300"></i> Próximo resultado pela Loteria Federal às 19:00h
+            </span>
+             <span class="flex items-center gap-2">
+                <i class="fa-solid fa-trophy text-yellow-300"></i> Ganhador de Ontem: Maria Souza (MG) - IPHONE 15 PRO
+            </span>
+
+            <!-- BLOCO 2 (Cópia Exata para o Loop) -->
+            <span class="flex items-center gap-2">
+                <i class="fa-solid fa-trophy text-yellow-300"></i> Ganhador de Ontem: João Silva (SP) - R$ 5.000,00
+            </span>
+            <span class="flex items-center gap-2">
+                <i class="fa-solid fa-fire text-yellow-300"></i> Sorteio da Ranger Rover Velar: Faltam apenas 10% das cotas!
+            </span>
+            <span class="flex items-center gap-2">
+                <i class="fa-solid fa-star text-yellow-300"></i> Entre no nosso Grupo VIP e receba ofertas exclusivas
+            </span>
+            <span class="flex items-center gap-2">
+                <i class="fa-solid fa-clock text-yellow-300"></i> Próximo resultado pela Loteria Federal às 19:00h
+            </span>
+             <span class="flex items-center gap-2">
+                <i class="fa-solid fa-trophy text-yellow-300"></i> Ganhador de Ontem: Maria Souza (MG) - IPHONE 15 PRO
+            </span>
+
+        </div>
+    </div>
 
     <!-- 
         === MENU LATERAL MOBILE (OFF-CANVAS) ===
@@ -84,8 +159,7 @@
     <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/60 z-[60] hidden backdrop-blur-sm transition-opacity"></div>
     
     <aside id="mobile-menu" class="fixed top-0 left-0 bottom-0 w-[280px] bg-white z-[70] shadow-2xl flex flex-col transform -translate-x-full transition-transform duration-300 ease-in-out">
-        <!-- Cabeçalho do Menu Lateral -->
-        <div class="bg-dark p-6 text-white">
+        <div class="bg-slate-900 p-6 text-white">
             <div class="flex justify-between items-start mb-4">
                 <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-lg font-bold">
                     <i class="fa-solid fa-user"></i>
@@ -97,19 +171,30 @@
             <button class="w-full bg-primary text-white py-2 rounded font-bold text-sm btn-login-trigger">Entrar ou Cadastrar</button>
         </div>
 
-        <!-- Links de Navegação Mobile -->
         <nav class="flex-1 overflow-y-auto py-2">
             <a href="#" class="flex items-center gap-3 px-6 py-4 hover:bg-slate-50 border-b border-slate-100 text-slate-700 font-medium">
                 <i class="fa-solid fa-house text-primary w-5"></i> Início
             </a>
-            <a href="#" class="flex items-center gap-3 px-6 py-4 hover:bg-slate-50 border-b border-slate-100 text-slate-700 font-medium">
-                <i class="fa-solid fa-ticket text-primary w-5"></i> Meus Sorteios
+            <a href="#resultados" class="flex items-center gap-3 px-6 py-4 hover:bg-slate-50 border-b border-slate-100 text-slate-700 font-medium">
+                <i class="fa-solid fa-trophy text-primary w-5"></i> Resultados
             </a>
-            <a href="#" class="flex items-center gap-3 px-6 py-4 hover:bg-slate-50 border-b border-slate-100 text-slate-700 font-medium">
-                <i class="fa-solid fa-trophy text-primary w-5"></i> Ganhadores
+            
+            <div class="border-b border-slate-100 pb-2">
+                <div class="px-6 py-4 text-slate-700 font-bold flex items-center gap-3">
+                    <i class="fa-solid fa-box-open text-primary w-5"></i> Box Vantagens
+                </div>
+                <div class="pl-14 pr-6 space-y-3">
+                    <a href="#faq" class="block text-sm text-slate-500 hover:text-primary">Perguntas Frequentes</a>
+                    <a href="#termos" class="block text-sm text-slate-500 hover:text-primary">Termos de Uso</a>
+                    <a href="#regulamento" class="block text-sm text-slate-500 hover:text-primary">Regulamento</a>
+                </div>
+            </div>
+
+            <a href="#clube" class="flex items-center gap-3 px-6 py-4 hover:bg-slate-50 border-b border-slate-100 text-slate-700 font-medium">
+                <i class="fa-solid fa-crown text-primary w-5"></i> Clube Box
             </a>
-            <a href="#" class="flex items-center gap-3 px-6 py-4 hover:bg-slate-50 border-b border-slate-100 text-slate-700 font-medium">
-                <i class="fa-brands fa-whatsapp text-primary w-5"></i> Suporte
+            <a href="#contato" class="flex items-center gap-3 px-6 py-4 hover:bg-slate-50 border-b border-slate-100 text-slate-700 font-medium">
+                <i class="fa-brands fa-whatsapp text-primary w-5"></i> Contato
             </a>
         </nav>
         

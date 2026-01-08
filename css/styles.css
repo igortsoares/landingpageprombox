@@ -1,60 +1,73 @@
 /* === VARIÁVEIS CSS (ROOT) ===
-    Definimos as cores aqui. Se precisarmos mudar o verde da marca no futuro,
-    mudamos apenas aqui e o site todo atualiza.
+    Definimos as cores aqui. Centralização facilita a manutenção.
 */
 :root {
-    --color-primary: #00B39D;      /* Verde Característico Prombox/PixMilhao */
-    --color-primary-dark: #008F7D; /* Variação mais escura para hover */
-    --color-dark: #1E293B;         /* Azul Escuro (Slate 800) para fundos institucionais */
-    --color-accent: #F59E0B;       /* Amarelo Ouro para destaques/alertas */
+    --color-primary: #00B39D;       /* Verde Padrão */
+    --color-primary-dark: #008F7D;
+    --color-dark: #1E293B;          /* Azul Escuro Institucional */
+    --color-accent: #F59E0B;        /* Laranja/Amarelo Padrão */
+    
+    /* NOVAS CORES PROMBOX */
+    --color-prombox-pink: #94014B;      /* Rosa Vinho (Logo/Faixa) */
+    --color-prombox-pink-dark: #700138; /* Rosa Escuro (Hover do botão) */
+    --color-prombox-yellow: #FACC15;    /* Amarelo Vibrante (Hover do menu) */
 }
 
 /* === CLASSES UTILITÁRIAS PERSONALIZADAS ===
-    Criamos classes que usam nossas variáveis para facilitar o uso no HTML.
-    Isso complementa o Tailwind CSS.
+    Usamos estas classes no HTML para aplicar as variáveis acima.
 */
+
+/* Cores de Fundo */
 .bg-primary { background-color: var(--color-primary); }
 .bg-primary-dark { background-color: var(--color-primary-dark); }
-.text-primary { color: var(--color-primary); }
 .bg-dark { background-color: var(--color-dark); }
+.bg-prombox-pink { background-color: var(--color-prombox-pink); }
 
-/* === CONFIGURAÇÕES GLOBAIS ===
-*/
-body {
-    font-family: 'Inter', sans-serif; /* Define a fonte padrão */
+/* Cores de Texto */
+.text-primary { color: var(--color-primary); }
+.text-prombox-pink { color: var(--color-prombox-pink); }
+
+/* Estados de Hover (Passar o mouse) */
+.hover-text-prombox-yellow:hover { 
+    color: var(--color-prombox-yellow) !important; 
+    /* !important garante que sobrescreva o branco do menu */
 }
 
-/* === MENU MOBILE ===
-    A classe .open é adicionada via Javascript.
-    Quando presente, o menu desliza para a posição 0 (visível).
-*/
+.hover-bg-prombox-pink-dark:hover {
+    background-color: var(--color-prombox-pink-dark) !important;
+}
+
+
+/* === CONFIGURAÇÕES GLOBAIS === */
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* === MENU MOBILE === */
 #mobile-menu.open {
     transform: translateX(0);
 }
 
-/* === ANIMAÇÕES ===
-    FadeInUp: Faz o elemento aparecer suavemente vindo de baixo.
-    Usado no Modal de Login.
-*/
+/* === ANIMAÇÕES === */
 @keyframes fadeInUp {
-    from { 
-        opacity: 0; 
-        transform: translate(-50%, -40%); /* Começa um pouco mais abaixo */
-    }
-    to { 
-        opacity: 1; 
-        transform: translate(-50%, -50%); /* Termina centralizado */
-    }
+    from { opacity: 0; transform: translate(-50%, -40%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+@keyframes fadeInUpDropdown {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-fade-in-up {
+    animation: fadeInUpDropdown 0.3s ease-out forwards;
+}
+
+#login-modal .animate-fade-in-up {
     animation: fadeInUp 0.3s ease-out forwards;
 }
 
-/* === BARRA DE ROLAGEM (SCROLLBAR) ===
-    Estilização para navegadores Webkit (Chrome, Edge, Safari)
-    para ficar mais elegante que a barra padrão cinza.
-*/
+/* === SCROLLBAR === */
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -66,5 +79,28 @@ body {
     border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8; /* Escurece ao passar o mouse */
+    background: #94a3b8;
+}
+
+/* === FAIXA DE NOTÍCIAS (TICKER) === */
+/* CORRIGIDO: Nome da classe estava errado (.macontainerrquee-) */
+.marquee-container {
+    background-color: var(--color-prombox-pink); /* Usa a variável agora */
+    border-bottom: 1px solid var(--color-prombox-pink-dark);
+}
+
+@keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+    display: flex;
+    width: max-content;
+    white-space: nowrap;
+    animation: marquee-scroll 50s linear infinite;
+}
+
+.marquee-container:hover .animate-marquee {
+    animation-play-state: paused;
 }
