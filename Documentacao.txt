@@ -1,0 +1,129 @@
+ 📘 Documentação Técnica e Contexto do Projeto: Prombox
+
+Cliente: TKS Vantagens
+
+Projeto: Plataforma de Sorteios e Premiações (Prombox)
+
+Responsável Frontend: Igor Soares
+
+Versão: 2.1 (Estável com Identidade Visual Consolidada)
+
+1. Visão Geral do Projeto
+
+O objetivo deste projeto é fornecer uma interface frontend de alta conversão para venda de rifas e sorteios online. A arquitetura foi desenhada espelhando as melhores práticas de UX (Experiência do Usuário) de grandes players do mercado (como Pix do Milhão), focando em:
+
+Credibilidade: Design profissional, cores sóbrias combinadas com cores vibrantes.
+
+Urgência: Uso de elementos visuais como barras de progresso e faixas de notícias (tickers).
+
+Facilidade de Uso: Fluxo de compra simplificado e mobile-first (pensado primeiramente para celular).
+
+2. Arquitetura Técnica
+
+Estrutura de Arquivos
+
+index.php: Arquivo mestre. Atualmente contém a estrutura HTML estática. Está pronto para receber a lógica PHP (<?php ... ?>) para renderizar dados dinâmicos do banco de dados.
+
+css/style.css: Cérebro visual do projeto. Contém as variáveis de cores (CSS Variables), animações personalizadas e overrides (sobrescritas) para garantir que a identidade da Prombox prevaleça sobre o framework padrão.
+
+js/main.js: Gerenciador de interatividade. Controla a abertura/fechamento do menu mobile e dos modais de login, sem depender de bibliotecas pesadas como jQuery.
+
+Bibliotecas Externas:
+
+Tailwind CSS (CDN): Para grid, layout e responsividade rápida.
+
+Font Awesome: Para ícones (usuário, menu, setas).
+
+Google Fonts (Inter): Tipografia moderna e legível.
+
+3. Detalhamento dos Componentes (Raio-X)
+
+A. Cabeçalho (Header)
+
+Comportamento: Sticky (fixo no topo) para facilitar a navegação.
+
+Design: Fundo Azul Escuro (--color-dark / #1E293B) para contraste.
+
+Navegação Desktop: Links com efeito hover em Amarelo Ouro (#FACC15) e indicação de página ativa em Rosa Prombox (#94014B).
+
+Interatividade: Dropdown "Box Vantagens" que aparece ao passar o mouse.
+
+B. Faixa de Notícias (News Ticker)
+
+Função: Gatilho mental de prova social e urgência. Mostra ganhadores recentes e avisos.
+
+Identidade: Fundo Rosa Prombox (#94014B) forçado via CSS para garantir destaque.
+
+Técnica: Utiliza CSS Animation infinito. O conteúdo HTML é duplicado internamente para criar um loop visual perfeito (sem buracos na animação).
+
+C. Hero Section (Destaque)
+
+Função: Apresentar o prêmio principal.
+
+Responsividade: Imagem de fundo com overlay escuro para garantir a leitura do texto branco sobreposto.
+
+D. Grid de Sorteios (Área Dinâmica)
+
+Ponto de Integração Backend: A div com classe grid contém cards de exemplo.
+
+Lógica Esperada: A equipe de backend deverá criar um loop (ex: foreach) que repetirá a estrutura do .raffle-card para cada sorteio ativo no banco de dados.
+
+Elementos do Card: Imagem, Título, Barra de Progresso (CSS width dinâmico), Preço e Botão de Compra.
+
+E. Menu Mobile (Off-Canvas)
+
+UX: Menu lateral que desliza da esquerda para a direita, padrão em aplicativos nativos.
+
+Contraste: Utiliza ícones coloridos para facilitar a identificação rápida das seções.
+
+4. Guia de Estilo (Design System)
+
+Para manter a consistência, todas as cores foram centralizadas no :root do CSS.
+
+Variável CSS
+
+Cor Hex
+
+Uso Principal
+
+--color-prombox-pink
+
+#94014B
+
+Logo, Faixa de Notícias, Botões Primários
+
+--color-prombox-pink-dark
+
+#700138
+
+Hover de botões (efeito de clique)
+
+--color-prombox-yellow
+
+#FACC15
+
+Destaques, Ícones, Hover de Links
+
+--color-dark
+
+#1E293B
+
+Fundos institucionais, Cabeçalho
+
+--color-primary
+
+#00B39D
+
+Verde (Ações de sucesso, Compra)
+
+5. Instruções para a Equipe de Backend (TKS)
+
+Injeção de Dados: Substituir os textos estáticos do index.php por variáveis PHP (ex: <?= $usuario_nome ?>, <?= $sorteio_titulo ?>).
+
+Faixa de Notícias: O conteúdo da div.animate-marquee pode ser gerado dinamicamente, mas deve-se atentar para duplicar o output para manter o efeito de loop infinito do CSS.
+
+Login: O formulário #login-modal form deve ter o atributo action apontando para a rota de autenticação.
+
+CSS Cache: O arquivo CSS está sendo chamado com ?v=<?php echo time(); ?> para evitar cache durante o desenvolvimento. Em produção, recomenda-se alterar para um número de versão fixo.
+
+Documento gerado para auxiliar na implementação e manutenção do sistema Prombox.
