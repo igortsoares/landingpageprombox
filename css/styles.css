@@ -1,106 +1,140 @@
-/* === VARIÁVEIS CSS (ROOT) ===
-    Definimos as cores aqui. Centralização facilita a manutenção.
+/* ============================================================================
+    ARQUIVO DE ESTILOS: PROMBOX (REINÍCIO DO ZERO)
+    Autor: Equipe Prombox
+    ============================================================================
 */
+
+/* 1. VARIÁVEIS GLOBAIS */
 :root {
-    --color-primary: #00B39D;       /* Verde Padrão */
-    --color-primary-dark: #008F7D;
-    --color-dark: #1E293B;          /* Azul Escuro Institucional */
-    --color-accent: #F59E0B;        /* Laranja/Amarelo Padrão */
+    /* Identidade Visual Prombox */
+    --prombox-pink: #700138;       /* Rosa Vinho Escuro (Solicitado) */
+    --prombox-pink-hover: #500028; /* Tom mais escuro para hover */
+    --prombox-yellow: #FACC15;     /* Amarelo Ouro */
+    --prombox-dark: #0F172A;       /* Azul Noite */
     
-    /* NOVAS CORES PROMBOX */
-    --color-prombox-pink: #94014B;      /* Rosa Vinho (Logo/Faixa) */
-    --color-prombox-pink-dark: #700138; /* Rosa Escuro (Hover do botão) */
-    --color-prombox-yellow: #FACC15;    /* Amarelo Vibrante (Hover do menu) */
+    /* Cores de Apoio */
+    --color-text: #1E293B;         /* Cinza Escuro */
+    --color-white: #FFFFFF;        /* Branco */
 }
 
-/* === CLASSES UTILITÁRIAS PERSONALIZADAS ===
-    Usamos estas classes no HTML para aplicar as variáveis acima.
-*/
-
-/* Cores de Fundo */
-.bg-primary { background-color: var(--color-primary); }
-.bg-primary-dark { background-color: var(--color-primary-dark); }
-.bg-dark { background-color: var(--color-dark); }
-.bg-prombox-pink { background-color: var(--color-prombox-pink); }
-
-/* Cores de Texto */
-.text-primary { color: var(--color-primary); }
-.text-prombox-pink { color: var(--color-prombox-pink); }
-
-/* Estados de Hover (Passar o mouse) */
-.hover-text-prombox-yellow:hover { 
-    color: var(--color-prombox-yellow) !important; 
-    /* !important garante que sobrescreva o branco do menu */
-}
-
-.hover-bg-prombox-pink-dark:hover {
-    background-color: var(--color-prombox-pink-dark) !important;
-}
-
-
-/* === CONFIGURAÇÕES GLOBAIS === */
+/* 2. RESET E FONTES */
 body {
     font-family: 'Inter', sans-serif;
+    color: var(--color-text);
+    overflow-x: hidden;
 }
 
-/* === MENU MOBILE === */
-#mobile-menu.open {
-    transform: translateX(0);
+/* 3. UTILITÁRIOS DE COR */
+/* Cores de Texto */
+.text-prombox-pink { 
+    color: var(--prombox-pink); 
 }
 
-/* === ANIMAÇÕES === */
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translate(-50%, -40%); }
-    to { opacity: 1; transform: translate(-50%, -50%); }
+.text-prombox-yellow { 
+    color: var(--prombox-yellow); 
 }
 
-@keyframes fadeInUpDropdown {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+/* Cores de Fundo */
+.bg-prombox-pink { 
+    background-color: var(--prombox-pink); 
 }
 
-.animate-fade-in-up {
-    animation: fadeInUpDropdown 0.3s ease-out forwards;
+.bg-prombox-dark { 
+    background-color: var(--prombox-dark); 
 }
 
-#login-modal .animate-fade-in-up {
-    animation: fadeInUp 0.3s ease-out forwards;
+/* 4. CABEÇALHO E NAVEGAÇÃO */
+.nav-link {
+    color: var(--color-white);
+    font-weight: 500;
+    transition: color 0.3s ease;
 }
 
-/* === SCROLLBAR === */
-::-webkit-scrollbar {
-    width: 8px;
-}
-::-webkit-scrollbar-track {
-    background: #f1f5f9;
-}
-::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+.nav-link:hover { 
+    color: var(--prombox-yellow); 
 }
 
-/* === FAIXA DE NOTÍCIAS (TICKER) === */
-/* CORRIGIDO: Nome da classe estava errado (.macontainerrquee-) */
-.marquee-container {
-    background-color: var(--color-prombox-pink); /* Usa a variável agora */
-    border-bottom: 1px solid var(--color-prombox-pink-dark);
+.nav-link.active {
+    color: var(--prombox-pink);
+    font-weight: 700;
 }
 
-@keyframes marquee-scroll {
+/* Botão Principal */
+.btn-primary-prombox {
+    background-color: var(--prombox-pink);
+    color: var(--color-white);
+    transition: all 0.3s ease;
+}
+
+.btn-primary-prombox:hover {
+    background-color: var(--prombox-pink-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(112, 1, 56, 0.3);
+}
+
+.dropdown-menu { 
+    border-top: 4px solid var(--prombox-pink); 
+}
+
+/* 5. FAIXA DE NOTÍCIAS (NEWS TICKER) */
+.prombox-ticker-container {
+    background-color: var(--prombox-pink);
+    color: var(--color-white);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 40;
+    overflow: hidden;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.prombox-ticker-wrapper {
+    display: flex;
+    width: max-content;
+    animation: ticker-slide 50s linear infinite;
+}
+
+@keyframes ticker-slide {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
 }
 
-.animate-marquee {
-    display: flex;
-    width: max-content;
-    white-space: nowrap;
-    animation: marquee-scroll 50s linear infinite;
+.prombox-ticker-container:hover .prombox-ticker-wrapper {
+    animation-play-state: paused;
 }
 
-.marquee-container:hover .animate-marquee {
-    animation-play-state: paused;
+.ticker-item {
+    padding-right: 4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+/* 6. CARTÕES DE SELEÇÃO DE COTAS */
+.quota-option-card.selected {
+    border-color: var(--prombox-pink);
+    background-color: #ffffff; /* Rosa muito claro apenas para feedback visual leve */
+    box-shadow: 0 4px 6px -1px rgba(112, 1, 56, 0.1);
+}
+
+.quota-option-card.selected span {
+    color: var(--prombox-pink);
+}
+
+/* 7. MODAIS E ANIMAÇÕES */
+#mobile-menu {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#mobile-menu.open { transform: translateX(0); }
+
+.animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
