@@ -1,129 +1,165 @@
- 📘 Documentação Técnica e Contexto do Projeto: Prombox
+📘 Documentação Técnica: Projeto Prombox (Frontend)
 
 Cliente: TKS Vantagens
 
 Projeto: Plataforma de Sorteios e Premiações (Prombox)
 
+Versão: 2.2 (Estável - Com Carrossel 3D CSS-Only)
+
 Responsável Frontend: Igor Soares
 
-Versão: 2.1 (Estável com Identidade Visual Consolidada)
+1. Visão Geral e Objetivos
 
-1. Visão Geral do Projeto
+O projeto Prombox é uma Landing Page de alta conversão focada na venda de cotas para sorteios online (rifas). A arquitetura foi desenhada priorizando:
 
-O objetivo deste projeto é fornecer uma interface frontend de alta conversão para venda de rifas e sorteios online. A arquitetura foi desenhada espelhando as melhores práticas de UX (Experiência do Usuário) de grandes players do mercado (como Pix do Milhão), focando em:
+Performance: Uso de CSS puro para animações complexas (como o ticker e o carrossel 3D), evitando JavaScript pesado que trava em dispositivos móveis.
 
-Credibilidade: Design profissional, cores sóbrias combinadas com cores vibrantes.
+Identidade Visual: Rigorosa aplicação da paleta de cores da marca (Rosa Vinho, Amarelo Ouro e Azul Noite).
 
-Urgência: Uso de elementos visuais como barras de progresso e faixas de notícias (tickers).
+Conversão: Fluxo de compra simplificado com seleção de pacotes e feedback visual imediato.
 
-Facilidade de Uso: Fluxo de compra simplificado e mobile-first (pensado primeiramente para celular).
+2. Arquitetura de Pastas e Arquivos
 
-2. Arquitetura Técnica
+A estrutura do projeto segue o padrão clássico de desenvolvimento web, facilitando a integração futura com frameworks PHP (Laravel/CodeIgniter) ou WordPress.
 
-Estrutura de Arquivos
+prombox-web/
+├── assets/              <-- Recursos estáticos
+│   └── images/          <-- (Logos, banners, ícones)
+├── css/                 <-- Estilos
+│   └── styles.css       <-- Cérebro visual (Variáveis, Animações, Overrides)
+├── js/                  <-- Lógica
+│   └── main.js          <-- Interatividade (Menu, Modal, Cálculos)
+└── index.php            <-- Estrutura (HTML Semântico + PHP Básico)
 
-index.php: Arquivo mestre. Atualmente contém a estrutura HTML estática. Está pronto para receber a lógica PHP (<?php ... ?>) para renderizar dados dinâmicos do banco de dados.
 
-css/style.css: Cérebro visual do projeto. Contém as variáveis de cores (CSS Variables), animações personalizadas e overrides (sobrescritas) para garantir que a identidade da Prombox prevaleça sobre o framework padrão.
-
-js/main.js: Gerenciador de interatividade. Controla a abertura/fechamento do menu mobile e dos modais de login, sem depender de bibliotecas pesadas como jQuery.
-
-Bibliotecas Externas:
-
-Tailwind CSS (CDN): Para grid, layout e responsividade rápida.
-
-Font Awesome: Para ícones (usuário, menu, setas).
-
-Google Fonts (Inter): Tipografia moderna e legível.
-
-3. Detalhamento dos Componentes (Raio-X)
+3. Detalhamento dos Componentes (Frontend)
 
 A. Cabeçalho (Header)
 
-Comportamento: Sticky (fixo no topo) para facilitar a navegação.
+Arquivo: index.php (Linhas 25-80)
 
-Design: Fundo Azul Escuro (--color-dark / #1E293B) para contraste.
+Comportamento: Fixo no topo (sticky), com fundo Azul Noite (.bg-prombox-dark).
 
-Navegação Desktop: Links com efeito hover em Amarelo Ouro (#FACC15) e indicação de página ativa em Rosa Prombox (#94014B).
+Navegação: Links brancos que ficam amarelos ao passar o mouse (.nav-link:hover). O link ativo fica rosa.
 
-Interatividade: Dropdown "Box Vantagens" que aparece ao passar o mouse.
+Responsividade: No mobile, os itens são ocultos e substituídos por um botão "Hambúrguer".
 
 B. Faixa de Notícias (News Ticker)
 
-Função: Gatilho mental de prova social e urgência. Mostra ganhadores recentes e avisos.
+Arquivo: index.php (Linhas 82-105)
 
-Identidade: Fundo Rosa Prombox (#94014B) forçado via CSS para garantir destaque.
+Visual: Faixa contínua rosa (.bg-prombox-pink) com texto branco.
 
-Técnica: Utiliza CSS Animation infinito. O conteúdo HTML é duplicado internamente para criar um loop visual perfeito (sem buracos na animação).
+Técnica: Animação CSS pura (@keyframes marquee-scroll) que move o conteúdo da direita para a esquerda. O conteúdo é duplicado no HTML para criar um loop infinito perfeito sem "buracos".
 
-C. Hero Section (Destaque)
+C. Seção Hero (Banner e Compra)
 
-Função: Apresentar o prêmio principal.
+Arquivo: index.php (Linhas 108-180)
 
-Responsividade: Imagem de fundo com overlay escuro para garantir a leitura do texto branco sobreposto.
+Banner Central: Imagem responsiva (max-w-4xl) centralizada, com efeito de hover sutil.
 
-D. Grid de Sorteios (Área Dinâmica)
+Seletor de Cotas:
 
-Ponto de Integração Backend: A div com classe grid contém cards de exemplo.
+Pacotes Rápidos: Botões (5, 10, 50, 100) que atualizam o input manual e o preço total instantaneamente.
 
-Lógica Esperada: A equipe de backend deverá criar um loop (ex: foreach) que repetirá a estrutura do .raffle-card para cada sorteio ativo no banco de dados.
+Input Manual: Permite ajuste fino (+/-).
 
-Elementos do Card: Imagem, Título, Barra de Progresso (CSS width dinâmico), Preço e Botão de Compra.
+Cálculo: Realizado em tempo real no js/main.js (Função updateTotal), multiplicando a quantidade por R$ 0,99.
 
-E. Menu Mobile (Off-Canvas)
+D. Carrossel de Depoimentos (Efeito 3D / Funil)
 
-UX: Menu lateral que desliza da esquerda para a direita, padrão em aplicativos nativos.
+Arquivo: index.php (Linhas 183-220) e css/styles.css (Seção 8)
 
-Contraste: Utiliza ícones coloridos para facilitar a identificação rápida das seções.
+Conceito: Lista horizontal de vídeos estilo "Stories".
+
+Efeito Visual:
+
+Máscaras: Uso de elementos pseudo-3D (.mask-top, .mask-bottom) com bordas arredondadas e sombras para criar a ilusão de um cilindro ou funil.
+
+Scroll: Rolagem horizontal nativa (overflow-x: scroll) com scroll-snap para que os vídeos parem sempre centralizados.
+
+Performance: Zero dependência de bibliotecas JS externas (Swiper/Slick), garantindo fluidez total no mobile.
 
 4. Guia de Estilo (Design System)
 
-Para manter a consistência, todas as cores foram centralizadas no :root do CSS.
+Todas as cores são gerenciadas via CSS Variables no arquivo css/styles.css. Para alterar a cor de um botão em todo o site, basta editar a variável aqui.
 
 Variável CSS
 
 Cor Hex
 
-Uso Principal
+Aplicação Principal
 
---color-prombox-pink
-
-#94014B
-
-Logo, Faixa de Notícias, Botões Primários
-
---color-prombox-pink-dark
+--prombox-pink
 
 #700138
 
-Hover de botões (efeito de clique)
+Cor Primária (Logo, Faixa, Botão Ativo)
 
---color-prombox-yellow
+--prombox-pink-hover
+
+#500028
+
+Estado Hover dos botões rosa
+
+--prombox-yellow
 
 #FACC15
 
-Destaques, Ícones, Hover de Links
+Destaques, Ícones, Hover do Menu
 
---color-dark
+--prombox-dark
+
+#0F172A
+
+Fundo do Cabeçalho e Footer
+
+--color-text
 
 #1E293B
 
-Fundos institucionais, Cabeçalho
+Texto geral (Cinza Escuro)
 
---color-primary
+Classes Utilitárias Criadas:
 
-#00B39D
+.text-prombox-pink, .bg-prombox-pink
 
-Verde (Ações de sucesso, Compra)
+.text-prombox-yellow
 
-5. Instruções para a Equipe de Backend (TKS)
+.bg-prombox-dark
 
-Injeção de Dados: Substituir os textos estáticos do index.php por variáveis PHP (ex: <?= $usuario_nome ?>, <?= $sorteio_titulo ?>).
+5. Instruções de Integração (Para equipe Backend)
 
-Faixa de Notícias: O conteúdo da div.animate-marquee pode ser gerado dinamicamente, mas deve-se atentar para duplicar o output para manter o efeito de loop infinito do CSS.
+Pontos de Injeção de Dados (PHP)
 
-Login: O formulário #login-modal form deve ter o atributo action apontando para a rota de autenticação.
+A equipe de backend deve substituir o conteúdo estático pelos dados vindos do banco de dados (MySQL/PostgreSQL).
 
-CSS Cache: O arquivo CSS está sendo chamado com ?v=<?php echo time(); ?> para evitar cache durante o desenvolvimento. Em produção, recomenda-se alterar para um número de versão fixo.
+Banner Principal:
 
-Documento gerado para auxiliar na implementação e manutenção do sistema Prombox.
+Substituir src="./assets/images/banner_central.jpeg" pela URL da imagem do sorteio ativo.
+
+Ticker de Notícias:
+
+Gerar o loop dos <span> dentro de .prombox-ticker-wrapper com os últimos ganhadores. Atenção: É necessário duplicar o loop (imprimir 2x a lista) para que a animação infinita funcione corretamente.
+
+Depoimentos (Carrossel):
+
+Substituir o loop for ($i = 1; $i <= 15; $i++) por um foreach real.
+
+O ID do vídeo do YouTube deve ser inserido dinamicamente no onclick="openVideoModal('ID_DO_VIDEO')" e na URL da thumbnail (img.youtube.com/...).
+
+Checkout:
+
+O botão "PARTICIPAR" chama a função JS checkout(). Esta função deve ser atualizada para:
+
+Submeter um formulário POST oculto;
+
+Ou redirecionar para o gateway de pagamento (Mercado Pago/Pagar.me) passando a quantidade (manualQty) e o valor total via GET/POST.
+
+Scripts e Dependências
+
+Certifique-se de manter o main.js no final do <body> para garantir que o DOM esteja carregado antes da execução dos scripts.
+
+O Cache Buster (?v=<?php echo time(); ?>) no link do CSS deve ser mantido em desenvolvimento, mas alterado para uma versão fixa em produção para otimizar o carregamento.
+
+Documentação atualizada em: 08/01/2026
