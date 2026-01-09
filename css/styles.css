@@ -34,7 +34,7 @@ body {
     color: var(--prombox-yellow); 
 }
 
-/* Cores de Fundo */
+/* Cores de Fundo - GARANTINDO A CORRETA APLICAÇÃO */
 .bg-prombox-pink { 
     background-color: var(--prombox-pink); 
 }
@@ -44,6 +44,11 @@ body {
 }
 
 /* 4. CABEÇALHO E NAVEGAÇÃO */
+/* Estilização específica para garantir que o cabeçalho pegue a cor */
+header.bg-prombox-dark {
+    background-color: var(--prombox-dark);
+}
+
 .nav-link {
     color: var(--color-white);
     font-weight: 500;
@@ -72,13 +77,42 @@ body {
     box-shadow: 0 4px 12px rgba(112, 1, 56, 0.3);
 }
 
+/* BOTÃO DE GRADIENTE ANIMADO (PARTICIPAR) */
+/* Este estilo sobrescreve o fundo verde padrão do HTML com um gradiente animado */
+.bg-green-600 {
+    background-size: 200% 200%;
+    background-image: linear-gradient(45deg, #16a34a 0%, #22c55e 25%, #4ade80 50%, #22c55e 75%, #16a34a 100%);
+    animation: gradient-move 3s ease infinite;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.bg-green-600:hover {
+    /* Aumenta o brilho e a sombra no hover */
+    box-shadow: 0 0 15px rgba(74, 222, 128, 0.6); 
+    transform: translateY(-2px);
+}
+
+@keyframes gradient-move {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 .dropdown-menu { 
     border-top: 4px solid var(--prombox-pink); 
 }
 
-/* 5. FAIXA DE NOTÍCIAS (NEWS TICKER) */
+/* 5. FAIXA DE NOTÍCIAS (NEWS TICKER) - CONFIGURAÇÃO CORRIGIDA */
+/* Aqui aplicamos a cor de fundo diretamente para garantir */
 .prombox-ticker-container {
-    background-color: var(--prombox-pink);
+    background-color: var(--prombox-pink); /* Usa a variável #700138 */
     color: var(--color-white);
     border-bottom: 1px solid rgba(0,0,0,0.1);
     position: relative;
@@ -119,7 +153,7 @@ body {
 /* 6. CARTÕES DE SELEÇÃO DE COTAS */
 .quota-option-card.selected {
     border-color: var(--prombox-pink);
-    background-color: #ffffff; /* Rosa muito claro apenas para feedback visual leve */
+    background-color: #FFF1F2; /* Rosa muito claro apenas para feedback visual leve */
     box-shadow: 0 4px 6px -1px rgba(112, 1, 56, 0.1);
 }
 
