@@ -78,7 +78,6 @@ header.bg-prombox-dark {
 }
 
 /* BOTÃO DE GRADIENTE ANIMADO (PARTICIPAR) */
-/* Este estilo sobrescreve o fundo verde padrão do HTML com um gradiente animado */
 .bg-green-600 {
     background-size: 200% 200%;
     background-image: linear-gradient(45deg, #16a34a 0%, #22c55e 25%, #4ade80 50%, #22c55e 75%, #16a34a 100%);
@@ -88,21 +87,14 @@ header.bg-prombox-dark {
 }
 
 .bg-green-600:hover {
-    /* Aumenta o brilho e a sombra no hover */
     box-shadow: 0 0 15px rgba(74, 222, 128, 0.6); 
     transform: translateY(-2px);
 }
 
 @keyframes gradient-move {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .dropdown-menu { 
@@ -110,7 +102,6 @@ header.bg-prombox-dark {
 }
 
 /* 5. FAIXA DE NOTÍCIAS (NEWS TICKER) - CONFIGURAÇÃO CORRIGIDA */
-/* Aqui aplicamos a cor de fundo diretamente para garantir */
 .prombox-ticker-container {
     background-color: var(--prombox-pink); /* Usa a variável #700138 */
     color: var(--color-white);
@@ -171,4 +162,39 @@ header.bg-prombox-dark {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* 8. CARROSSEL HORIZONTAL EFEITO FUNIL */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.testimonial-card {
+    position: relative;
+    transform-origin: center center;
+    transition: transform 0.3s ease;
+}
+
+/* Efeito de Máscara para o Funil (Curva inferior) */
+.funnel-mask {
+    position: absolute;
+    bottom: -80px; /* Ajuste fino da altura da curva */
+    left: -10%;
+    width: 120%;
+    height: 150px;
+    background-color: white; /* Mesma cor do fundo da seção */
+    border-radius: 50% 50% 0 0; /* Cria o arco convexo */
+    z-index: 20;
+    pointer-events: none; /* Permite clicar através da máscara se necessário */
+    box-shadow: 0 -20px 40px rgba(255,255,255,0.8); /* Suaviza a borda */
+}
+
+/* Perspectiva para dar profundidade */
+.perspective-container {
+    perspective: 1000px;
+    overflow: hidden; /* Importante para cortar a máscara */
 }

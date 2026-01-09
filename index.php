@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <!-- 
     INDEX.PHP - ESTRUTURA PRINCIPAL PROMBOX
-    Correção: Uso de classes CSS padronizadas para cores
+    Atualizado: Carrossel Depoimentos (15 itens, menor tamanho, efeito funil)
 -->
 <head>
     <meta charset="UTF-8">
@@ -27,8 +27,6 @@
     <!-- === HEADER (FIXO) === -->
     <header class="bg-prombox-dark text-white sticky top-0 z-50 shadow-lg h-20 flex items-center">
         <div class="container mx-auto px-4 flex items-center justify-between w-full">
-            
-            <!-- ESQUERDA: Menu Mobile e Logo -->
             <div class="flex items-center gap-4 shrink-0">
                 <button id="btn-menu-open" class="lg:hidden text-2xl text-white hover:text-prombox-yellow transition">
                     <i class="fa-solid fa-bars"></i>
@@ -38,12 +36,9 @@
                 </a>
             </div>
 
-            <!-- CENTRO: Navegação Desktop -->
             <nav class="hidden lg:flex gap-8 items-center h-full justify-center flex-1 mx-4">
                 <a href="#" class="nav-link active">Início</a>
                 <a href="#resultados" class="nav-link">Resultados</a>
-                
-                <!-- Dropdown -->
                 <div class="relative group h-full flex items-center">
                     <a href="#" class="nav-link flex items-center gap-1 py-6">
                         Box Vantagens 
@@ -55,12 +50,10 @@
                         <a href="#regulamento" class="block px-6 py-3 hover:bg-slate-50 hover:text-prombox-pink transition font-medium text-sm">Regulamento</a>
                     </div>
                 </div>
-
                 <a href="#clube" class="nav-link">Clube Box</a>
                 <a href="#contato" class="nav-link">Contato</a>
             </nav>
 
-            <!-- DIREITA: Botões -->
             <div class="flex items-center gap-4 shrink-0">
                 <a href="#" class="hidden lg:flex items-center gap-2 text-sm font-semibold hover:text-yellow-400 transition text-white">
                     <i class="fa-solid fa-receipt"></i> Meus Números
@@ -73,7 +66,7 @@
         </div>
     </header>
 
-    <!-- === TICKER (Faixa de Notícias) === -->
+    <!-- === TICKER === -->
     <div class="prombox-ticker-container">
         <div class="prombox-ticker-wrapper">
             <div class="flex items-center">
@@ -82,7 +75,6 @@
                 <span class="ticker-item"><i class="fa-solid fa-star text-yellow-300"></i> Entre no Grupo VIP e receba ofertas</span>
                 <span class="ticker-item"><i class="fa-solid fa-clock text-yellow-300"></i> Resultado pela Loteria Federal às 19h</span>
             </div>
-            <!-- Duplicata para Loop -->
             <div class="flex items-center">
                 <span class="ticker-item"><i class="fa-solid fa-trophy text-yellow-300"></i> Ganhador de Ontem: João Silva (SP) - R$ 5.000,00</span>
                 <span class="ticker-item"><i class="fa-solid fa-fire text-yellow-300"></i> Sorteio da Ranger Rover: Últimas cotas!</span>
@@ -96,55 +88,44 @@
     <main class="py-8 md:py-12 bg-slate-50 relative z-10">
         <div class="container mx-auto px-4">
             
-            <!-- 1. Banner Central -->
             <div class="w-full md:w-2/4 max-w-3xl mx-auto mb-8 md:mb-12">
                 <div class="relative group rounded-2xl overflow-hidden shadow-2xl border-4 border-white transform transition duration-500 hover:scale-[1.01]">
                     <img src="./assets/images/banner_central.jpeg" 
                          alt="Sorteio Principal Prombox" 
                          class="w-full h-auto object-cover min-h-[200px] bg-slate-200"
                          onerror="this.src='https://placehold.co/1200x400/700138/white?text=Banner+Prombox';">
-                    
-                    <!-- Badge -->
                     <div class="absolute top-4 right-4 bg-prombox-yellow text-slate-900 font-black px-4 py-1 rounded-full shadow-lg text-xs md:text-sm animate-bounce">
                         🔥 CORRE QUE TÁ ACABANDO!
                     </div>
                 </div>
             </div>
 
-            <!-- 2. Área de Compra (Seleção de Cotas) -->
             <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
-                
                 <div class="bg-prombox-dark p-6 text-center relative overflow-hidden">
                     <div class="absolute inset-0 bg-prombox-pink opacity-10"></div>
-                    <h2 class="text-xl md:text-2xl font-bold text-white relative z-10">
-                        ⚡ Escolha seus números da sorte
-                    </h2>
+                    <h2 class="text-xl md:text-2xl font-bold text-white relative z-10">⚡ Escolha seus números da sorte</h2>
                     <p class="text-slate-400 text-sm mt-1 relative z-10">Por apenas <span class="text-prombox-yellow font-bold text-lg">R$ 0,99</span> cada</p>
                 </div>
 
                 <div class="p-6 md:p-8">
                     <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 text-center">Pacotes Promocionais</p>
-                    
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                        <div onclick="selectQuota(5, 4.95)" class="quota-option-card group cursor-pointer border-2 border-slate-100 rounded-xl p-4 text-center transition-all duration-300 hover:border-prombox-pink hover:shadow-lg relative overflow-hidden bg-slate-50">
+                        <div onclick="selectQuota(5)" class="quota-option-card group cursor-pointer border-2 border-slate-100 rounded-xl p-4 text-center transition-all duration-300 hover:border-prombox-pink hover:shadow-lg relative overflow-hidden bg-slate-50">
                             <span class="block text-2xl font-black text-slate-700 group-hover:text-prombox-pink transition-colors">+05</span>
                             <span class="text-[10px] text-slate-500 font-bold uppercase">Cotas</span>
                             <div class="absolute bottom-0 left-0 right-0 h-1 bg-prombox-pink transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
                         </div>
-
-                        <div onclick="selectQuota(10, 9.90)" class="quota-option-card cursor-pointer border-2 border-prombox-yellow bg-yellow-50/50 rounded-xl p-4 text-center transition-all duration-300 hover:shadow-lg relative overflow-hidden transform hover:-translate-y-1">
+                        <div onclick="selectQuota(10)" class="quota-option-card cursor-pointer border-2 border-prombox-yellow bg-yellow-50/50 rounded-xl p-4 text-center transition-all duration-300 hover:shadow-lg relative overflow-hidden transform hover:-translate-y-1">
                             <div class="absolute top-0 right-0 bg-prombox-yellow text-[9px] font-bold px-2 py-0.5 text-slate-900 rounded-bl-lg">POPULAR</div>
                             <span class="block text-2xl font-black text-slate-800">+10</span>
                             <span class="text-[10px] text-slate-600 font-bold uppercase">Cotas</span>
                         </div>
-
-                        <div onclick="selectQuota(50, 49.50)" class="quota-option-card group cursor-pointer border-2 border-slate-100 rounded-xl p-4 text-center transition-all duration-300 hover:border-prombox-pink hover:shadow-lg relative overflow-hidden bg-slate-50">
+                        <div onclick="selectQuota(50)" class="quota-option-card group cursor-pointer border-2 border-slate-100 rounded-xl p-4 text-center transition-all duration-300 hover:border-prombox-pink hover:shadow-lg relative overflow-hidden bg-slate-50">
                             <span class="block text-2xl font-black text-slate-700 group-hover:text-prombox-pink transition-colors">+50</span>
                             <span class="text-[10px] text-slate-500 font-bold uppercase">Cotas</span>
                             <div class="absolute bottom-0 left-0 right-0 h-1 bg-prombox-pink transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
                         </div>
-
-                        <div onclick="selectQuota(100, 99.00)" class="quota-option-card group cursor-pointer border-2 border-slate-100 rounded-xl p-4 text-center transition-all duration-300 hover:border-prombox-pink hover:shadow-lg relative overflow-hidden bg-slate-50">
+                        <div onclick="selectQuota(100)" class="quota-option-card group cursor-pointer border-2 border-slate-100 rounded-xl p-4 text-center transition-all duration-300 hover:border-prombox-pink hover:shadow-lg relative overflow-hidden bg-slate-50">
                             <span class="block text-2xl font-black text-slate-700 group-hover:text-prombox-pink transition-colors">+100</span>
                             <span class="text-[10px] text-slate-500 font-bold uppercase">Cotas</span>
                             <div class="absolute bottom-0 left-0 right-0 h-1 bg-prombox-pink transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
@@ -152,34 +133,77 @@
                     </div>
 
                     <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-6">
-                        
                         <div class="flex items-center gap-4 w-full md:w-auto justify-center">
-                            <button onclick="adjustManual(-1)" class="w-10 h-10 rounded-full bg-white border border-slate-300 text-slate-500 hover:text-prombox-pink hover:border-prombox-pink transition font-bold flex items-center justify-center shadow-sm">
-                                <i class="fa-solid fa-minus"></i>
-                            </button>
+                            <button onclick="adjustManual(-1)" class="w-10 h-10 rounded-full bg-white border border-slate-300 text-slate-500 hover:text-prombox-pink hover:border-prombox-pink transition font-bold flex items-center justify-center shadow-sm"><i class="fa-solid fa-minus"></i></button>
                             <div class="text-center">
                                 <input type="number" id="manualQty" value="1" class="w-20 text-center font-black text-2xl text-slate-800 bg-transparent border-none focus:ring-0 p-0" onchange="updateTotal()">
                                 <span class="block text-[10px] text-slate-400 font-bold uppercase mt-[-4px]">Cotas</span>
                             </div>
-                            <button onclick="adjustManual(1)" class="w-10 h-10 rounded-full bg-white border border-slate-300 text-slate-500 hover:text-prombox-pink hover:border-prombox-pink transition font-bold flex items-center justify-center shadow-sm">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
+                            <button onclick="adjustManual(1)" class="w-10 h-10 rounded-full bg-white border border-slate-300 text-slate-500 hover:text-prombox-pink hover:border-prombox-pink transition font-bold flex items-center justify-center shadow-sm"><i class="fa-solid fa-plus"></i></button>
                         </div>
-
                         <button class="w-full md:flex-1 bg-green-600 hover:bg-green-700 text-white font-bold text-lg py-4 px-6 rounded-xl shadow-lg hover:shadow-green-500/30 transition transform hover:-translate-y-1 flex items-center justify-center gap-3 group">
                             <span>PARTICIPAR</span>
                             <span class="bg-white/20 px-2 py-0.5 rounded text-sm group-hover:bg-white/30 transition" id="btnTotalDisplay">R$ 0,99</span>
                             <i class="fa-solid fa-arrow-right"></i>
                         </button>
-
                     </div>
                 </div>
             </div>
-
         </div>
     </main>
 
-    <!-- === MENU MOBILE (OFF-CANVAS) === -->
+    <!-- === SEÇÃO DEPOIMENTOS (CARROSSEL HORIZONTAL TIPO FUNIL) === -->
+    <section id="depoimentos" class="bg-white py-12 overflow-hidden">
+        <div class="container mx-auto px-4 text-center mb-8">
+            <h2 class="text-3xl md:text-4xl font-black text-slate-800 mb-2">Quem ganhou, recomenda!</h2>
+            <p class="text-slate-500 max-w-xl mx-auto">Confira os depoimentos dos nossos ganhadores recentes.</p>
+        </div>
+
+        <!-- Container do Carrossel com Efeito Funil -->
+        <div class="testimonial-carousel-container relative w-full max-w-7xl mx-auto perspective-container pb-10">
+            
+            <!-- Sombras laterais para dar profundidade -->
+            <div class="absolute top-0 left-0 bottom-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+            <div class="absolute top-0 right-0 bottom-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+
+            <!-- Máscara Circular (Funil) - Overlay Branco Curvo no fundo -->
+            <div class="funnel-mask"></div>
+
+            <!-- Track Horizontal: 15 Itens -->
+            <div class="testimonial-track flex space-x-4 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar p-8 items-center">
+                
+                <!-- CARD PADRÃO (REPETIDO 15 VEZES) -->
+                <?php for ($i = 1; $i <= 15; $i++): ?>
+                <div class="testimonial-card snap-center shrink-0 w-[150px] h-[266px] bg-slate-900 rounded-xl overflow-hidden shadow-xl relative group cursor-pointer transition-all duration-300 transform hover:scale-105 hover:-translate-y-2 border-2 border-white/10" onclick="openVideoModal('dQw4w9WgXcQ')">
+                    <!-- Imagem Capa -->
+                    <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-500" alt="Depoimento <?php echo $i; ?>">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-10 h-10 bg-prombox-pink/90 rounded-full flex items-center justify-center text-white text-lg shadow-lg group-hover:scale-110 transition duration-300 backdrop-blur-sm">
+                            <i class="fa-solid fa-play ml-1"></i>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black via-black/70 to-transparent">
+                        <h3 class="text-white font-bold text-xs leading-tight">Ganhador <?php echo $i; ?></h3>
+                        <p class="text-prombox-yellow text-[10px] font-bold mt-0.5">iPhone 15</p>
+                    </div>
+                </div>
+                <?php endfor; ?>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- === MODAL DE VÍDEO (YouTube) === -->
+    <div id="video-modal" class="fixed inset-0 z-[100] hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-4" onclick="closeVideoModal()">
+        <div class="relative w-full max-w-3xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl animate-fade-in" onclick="event.stopPropagation()">
+            <button onclick="closeVideoModal()" class="absolute top-4 right-4 z-20 text-white hover:text-prombox-pink text-3xl drop-shadow-md">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <iframe id="youtube-player" class="w-full h-full" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- === MENU MOBILE E OUTROS === -->
     <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/60 z-[60] hidden backdrop-blur-sm transition-opacity"></div>
     <aside id="mobile-menu" class="fixed top-0 left-0 bottom-0 w-[280px] bg-white z-[70] shadow-2xl flex flex-col transform -translate-x-full transition-transform duration-300">
         <div class="bg-prombox-dark p-6 text-white relative">
@@ -206,7 +230,7 @@
         <div class="p-4 bg-slate-50 text-center text-[10px] text-slate-400">&copy; 2024 Prombox.</div>
     </aside>
 
-    <!-- === MODAL DE LOGIN === -->
+    <!-- Modal Login -->
     <div id="login-modal" class="fixed inset-0 z-[100] hidden">
         <div id="login-overlay" class="absolute inset-0 bg-black/80 backdrop-blur-sm cursor-pointer"></div>
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl animate-fade-in">
