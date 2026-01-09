@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <!-- 
-    INDEX.PHP - ESTRUTURA PRINCIPAL PROMBOX
-    Atualizado: Carrossel Depoimentos (15 itens, menor tamanho, efeito funil)
+    INDEX.PHP - VERSÃO 3.0 (COM SEÇÃO BENEFÍCIOS)
+    - Seção "Conheça nossos benefícios" adicionada após depoimentos.
+    - Grid responsivo (2 colunas mobile -> 6 colunas desktop).
 -->
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Prombox | Prêmios e Sorteios</title>
     
     <!-- 1. Tailwind CSS -->
@@ -22,11 +23,12 @@
     <link rel="stylesheet" href="css/styles.css?v=<?php echo time(); ?>">
 </head>
 
-<body class="bg-slate-50 antialiased flex flex-col min-h-screen font-['Inter']">
+<body class="bg-slate-50 antialiased flex flex-col min-h-screen font-['Inter'] overflow-x-hidden">
 
     <!-- === HEADER (FIXO) === -->
-    <header class="bg-prombox-dark text-white sticky top-0 z-50 shadow-lg h-20 flex items-center">
+    <header class="bg-prombox-dark text-white sticky top-0 z-50 shadow-lg h-20 flex items-center w-full">
         <div class="container mx-auto px-4 flex items-center justify-between w-full">
+            <!-- Lado Esquerdo: Hambúrguer + Logo -->
             <div class="flex items-center gap-4 shrink-0">
                 <button id="btn-menu-open" class="lg:hidden text-2xl text-white hover:text-prombox-yellow transition">
                     <i class="fa-solid fa-bars"></i>
@@ -36,11 +38,12 @@
                 </a>
             </div>
 
+            <!-- Centro: Navegação Desktop (Some em Tablet/Mobile) -->
             <nav class="hidden lg:flex gap-8 items-center h-full justify-center flex-1 mx-4">
                 <a href="#" class="nav-link active">Início</a>
                 <a href="#resultados" class="nav-link">Resultados</a>
                 <div class="relative group h-full flex items-center">
-                    <a href="#" class="nav-link flex items-center gap-1 py-6">
+                    <a href="#beneficios" class="nav-link flex items-center gap-1 py-6">
                         Box Vantagens 
                         <i class="fa-solid fa-chevron-down text-[10px] opacity-70 group-hover:text-yellow-400"></i>
                     </a>
@@ -54,20 +57,24 @@
                 <a href="#contato" class="nav-link">Contato</a>
             </nav>
 
+            <!-- Lado Direito: Ações -->
             <div class="flex items-center gap-4 shrink-0">
+                <!-- Meus Números: Visível APENAS em Desktop (lg) -->
                 <a href="#" class="hidden lg:flex items-center gap-2 text-sm font-semibold hover:text-yellow-400 transition text-white">
                     <i class="fa-solid fa-receipt"></i> Meus Números
                 </a>
-                <button id="btn-login-open" class="btn-primary-prombox px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-bold flex items-center gap-2">
-                    <i class="fa-regular fa-user"></i>
-                    <span>Entrar ou Cadastrar</span>
+                
+                <!-- Botão Entrar: Mobile/Tablet = Ícone, Desktop = Texto -->
+                <button id="btn-login-open" class="btn-primary-prombox w-10 h-10 lg:w-auto lg:h-auto lg:px-6 lg:py-2.5 rounded-full text-xs md:text-sm font-bold flex items-center justify-center gap-2 p-0 transition-all duration-300">
+                    <i class="fa-regular fa-user text-lg lg:text-base"></i>
+                    <span class="hidden lg:inline">Entrar ou Cadastrar</span>
                 </button>
             </div>
         </div>
     </header>
 
     <!-- === TICKER === -->
-    <div class="prombox-ticker-container">
+    <div class="prombox-ticker-container w-full">
         <div class="prombox-ticker-wrapper">
             <div class="flex items-center">
                 <span class="ticker-item"><i class="fa-solid fa-trophy text-yellow-300"></i> Ganhador de Ontem: João Silva (SP) - R$ 5.000,00</span>
@@ -85,7 +92,7 @@
     </div>
 
     <!-- === SEÇÃO 1: BANNER E SELEÇÃO DE COTAS === -->
-    <main class="py-8 md:py-12 bg-slate-50 relative z-10">
+    <main class="py-8 md:py-12 bg-slate-50 relative z-10 w-full">
         <div class="container mx-auto px-4">
             
             <div class="w-full md:w-2/4 max-w-3xl mx-auto mb-8 md:mb-12">
@@ -153,7 +160,7 @@
     </main>
 
     <!-- === SEÇÃO DEPOIMENTOS (CARROSSEL HORIZONTAL TIPO FUNIL) === -->
-    <section id="depoimentos" class="bg-white py-12 overflow-hidden">
+    <section id="depoimentos" class="bg-white py-12 overflow-hidden w-full">
         <div class="container mx-auto px-4 text-center mb-8">
             <h2 class="text-3xl md:text-4xl font-black text-slate-800 mb-2">Quem ganhou, recomenda!</h2>
             <p class="text-slate-500 max-w-xl mx-auto">Confira os depoimentos dos nossos ganhadores recentes.</p>
@@ -161,21 +168,13 @@
 
         <!-- Container do Carrossel com Efeito Funil -->
         <div class="testimonial-carousel-container relative w-full max-w-7xl mx-auto perspective-container pb-10">
-            
-            <!-- Sombras laterais para dar profundidade -->
             <div class="absolute top-0 left-0 bottom-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
             <div class="absolute top-0 right-0 bottom-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
-
-            <!-- Máscara Circular (Funil) - Overlay Branco Curvo no fundo -->
             <div class="funnel-mask"></div>
 
-            <!-- Track Horizontal: 15 Itens -->
             <div class="testimonial-track flex space-x-4 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar p-8 items-center">
-                
-                <!-- CARD PADRÃO (REPETIDO 15 VEZES) -->
                 <?php for ($i = 1; $i <= 15; $i++): ?>
                 <div class="testimonial-card snap-center shrink-0 w-[150px] h-[266px] bg-slate-900 rounded-xl overflow-hidden shadow-xl relative group cursor-pointer transition-all duration-300 transform hover:scale-105 hover:-translate-y-2 border-2 border-white/10" onclick="openVideoModal('dQw4w9WgXcQ')">
-                    <!-- Imagem Capa -->
                     <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-500" alt="Depoimento <?php echo $i; ?>">
                     <div class="absolute inset-0 flex items-center justify-center">
                         <div class="w-10 h-10 bg-prombox-pink/90 rounded-full flex items-center justify-center text-white text-lg shadow-lg group-hover:scale-110 transition duration-300 backdrop-blur-sm">
@@ -188,6 +187,90 @@
                     </div>
                 </div>
                 <?php endfor; ?>
+            </div>
+        </div>
+    </section>
+
+    <!-- === SEÇÃO BENEFÍCIOS (NOVA) === -->
+    <section id="beneficios" class="py-12 bg-slate-50 w-full relative z-30">
+        <div class="container mx-auto px-4">
+            <!-- Header da Seção -->
+            <div class="flex justify-between items-end mb-6">
+                <h2 class="text-2xl md:text-3xl font-black text-slate-800">Conheça nossos benefícios</h2>
+                <a href="#" class="text-sm font-semibold text-slate-500 hover:text-prombox-pink transition flex items-center gap-1 group">
+                    ver mais <i class="fa-solid fa-arrow-right transform group-hover:translate-x-1 transition"></i>
+                </a>
+            </div>
+
+            <!-- Grid de Cards (2 col Mobile / 6 col Desktop) -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                
+                <!-- Card 1: Experiências -->
+                <a href="#" class="benefit-card group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-slate-100 flex flex-col">
+                    <div class="h-32 bg-prombox-yellow flex items-center justify-center p-4 relative overflow-hidden">
+                        <!-- Placeholder Imagem (Substituir por <img>) -->
+                        <i class="fa-solid fa-champagne-glasses text-4xl text-slate-800/20 group-hover:scale-110 transition duration-500"></i>
+                    </div>
+                    <div class="p-4 flex flex-col items-center justify-between flex-1 gap-3">
+                        <h3 class="font-bold text-slate-800 text-sm text-center">Experiências</h3>
+                        <button class="w-full py-1.5 rounded-full bg-prombox-yellow text-slate-900 font-bold text-[10px] uppercase tracking-wide hover:bg-yellow-400 transition shadow-sm">Ver produtos</button>
+                    </div>
+                </a>
+
+                <!-- Card 2: Gift Cards -->
+                <a href="#" class="benefit-card group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-slate-100 flex flex-col">
+                    <div class="h-32 bg-prombox-yellow flex items-center justify-center p-4 relative overflow-hidden">
+                        <i class="fa-solid fa-ticket text-4xl text-slate-800/20 group-hover:scale-110 transition duration-500"></i>
+                    </div>
+                    <div class="p-4 flex flex-col items-center justify-between flex-1 gap-3">
+                        <h3 class="font-bold text-slate-800 text-sm text-center">Gift Cards</h3>
+                        <button class="w-full py-1.5 rounded-full bg-prombox-yellow text-slate-900 font-bold text-[10px] uppercase tracking-wide hover:bg-yellow-400 transition shadow-sm">Ver produtos</button>
+                    </div>
+                </a>
+
+                <!-- Card 3: Loja -->
+                <a href="#" class="benefit-card group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-slate-100 flex flex-col">
+                    <div class="h-32 bg-prombox-yellow flex items-center justify-center p-4 relative overflow-hidden">
+                        <i class="fa-solid fa-shirt text-4xl text-slate-800/20 group-hover:scale-110 transition duration-500"></i>
+                    </div>
+                    <div class="p-4 flex flex-col items-center justify-between flex-1 gap-3">
+                        <h3 class="font-bold text-slate-800 text-sm text-center">Loja</h3>
+                        <button class="w-full py-1.5 rounded-full bg-prombox-yellow text-slate-900 font-bold text-[10px] uppercase tracking-wide hover:bg-yellow-400 transition shadow-sm">Ver produtos</button>
+                    </div>
+                </a>
+
+                <!-- Card 4: Benefícios -->
+                <a href="#" class="benefit-card group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-slate-100 flex flex-col">
+                    <div class="h-32 bg-prombox-yellow flex items-center justify-center p-4 relative overflow-hidden">
+                        <i class="fa-solid fa-tags text-4xl text-slate-800/20 group-hover:scale-110 transition duration-500"></i>
+                    </div>
+                    <div class="p-4 flex flex-col items-center justify-between flex-1 gap-3">
+                        <h3 class="font-bold text-slate-800 text-sm text-center">Benefícios</h3>
+                        <button class="w-full py-1.5 rounded-full bg-prombox-yellow text-slate-900 font-bold text-[10px] uppercase tracking-wide hover:bg-yellow-400 transition shadow-sm">Ver produtos</button>
+                    </div>
+                </a>
+
+                <!-- Card 5: E-books -->
+                <a href="#" class="benefit-card group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-slate-100 flex flex-col">
+                    <div class="h-32 bg-prombox-yellow flex items-center justify-center p-4 relative overflow-hidden">
+                        <i class="fa-solid fa-book-open text-4xl text-slate-800/20 group-hover:scale-110 transition duration-500"></i>
+                    </div>
+                    <div class="p-4 flex flex-col items-center justify-between flex-1 gap-3">
+                        <h3 class="font-bold text-slate-800 text-sm text-center">E-books</h3>
+                        <button class="w-full py-1.5 rounded-full bg-prombox-yellow text-slate-900 font-bold text-[10px] uppercase tracking-wide hover:bg-yellow-400 transition shadow-sm">Ver produtos</button>
+                    </div>
+                </a>
+
+                <!-- Card 6: Meu Time -->
+                <a href="#" class="benefit-card group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-slate-100 flex flex-col">
+                    <div class="h-32 bg-prombox-yellow flex items-center justify-center p-4 relative overflow-hidden">
+                        <i class="fa-solid fa-futbol text-4xl text-slate-800/20 group-hover:scale-110 transition duration-500"></i>
+                    </div>
+                    <div class="p-4 flex flex-col items-center justify-between flex-1 gap-3">
+                        <h3 class="font-bold text-slate-800 text-sm text-center">Meu Time</h3>
+                        <button class="w-full py-1.5 rounded-full bg-prombox-yellow text-slate-900 font-bold text-[10px] uppercase tracking-wide hover:bg-yellow-400 transition shadow-sm">Ver produtos</button>
+                    </div>
+                </a>
 
             </div>
         </div>
@@ -214,8 +297,21 @@
             <button class="w-full btn-primary-prombox py-2 rounded-lg font-bold text-sm btn-login-trigger">Entrar ou Cadastrar</button>
         </div>
         <nav class="flex-1 overflow-y-auto py-2">
-            <a href="#" class="flex items-center gap-3 px-6 py-4 hover:bg-slate-50 border-b border-slate-100 text-prombox-pink font-bold"><i class="fa-solid fa-house w-5 text-center"></i> Início</a>
-            <a href="#resultados" class="flex items-center gap-3 px-6 py-4 hover:bg-slate-50 border-b border-slate-100 text-slate-700 font-medium hover:text-prombox-pink"><i class="fa-solid fa-trophy w-5 text-center text-slate-400"></i> Resultados</a>
+            <!-- 1. ITEM "INÍCIO" -->
+            <a href="#" class="flex items-center gap-3 px-6 py-4 hover:bg-slate-50 border-b border-slate-100 text-prombox-pink font-bold">
+                <i class="fa-solid fa-house w-5 text-center"></i> Início
+            </a>
+            
+            <!-- 2. ITEM "MEUS NÚMEROS" (MOVIDO PARA O HAMBÚRGUER) -->
+            <a href="#" class="flex items-center gap-3 px-6 py-4 hover:bg-slate-50 border-b border-slate-100 text-slate-700 font-medium hover:text-prombox-pink">
+                <i class="fa-solid fa-receipt w-5 text-center text-slate-400"></i> Meus Números
+            </a>
+
+            <!-- 3. ITEM "RESULTADOS" -->
+            <a href="#resultados" class="flex items-center gap-3 px-6 py-4 hover:bg-slate-50 border-b border-slate-100 text-slate-700 font-medium hover:text-prombox-pink">
+                <i class="fa-solid fa-trophy w-5 text-center text-slate-400"></i> Resultados
+            </a>
+            
             <div class="border-b border-slate-100 pb-2 bg-slate-50/50">
                 <div class="px-6 py-4 text-slate-800 font-bold flex items-center gap-3"><i class="fa-solid fa-box-open w-5 text-center text-slate-400"></i> Box Vantagens</div>
                 <div class="pl-14 pr-6 space-y-3 pb-2">
