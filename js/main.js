@@ -1,11 +1,12 @@
 /*
     ARQUIVO JAVASCRIPT: PROMBOX
+    Responsável pelas interações de clique, abertura de menus e LÓGICA DE CÁLCULO.
 */
 
 document.addEventListener('DOMContentLoaded', () => {
     
     // ==========================================
-    // 1. MENU MOBILE
+    // 1. MENU MOBILE E MODAIS (Lógica de Interface)
     // ==========================================
     const btnMenuOpen = document.getElementById('btn-menu-open');
     const btnMenuClose = document.getElementById('btn-menu-close');
@@ -29,9 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(btnMenuClose) btnMenuClose.addEventListener('click', toggleMenu);
     if(mobileOverlay) mobileOverlay.addEventListener('click', toggleMenu);
 
-    // ==========================================
-    // 2. MODAL DE LOGIN
-    // ==========================================
+    // Lógica do Modal de Login
     const loginModal = document.getElementById('login-modal');
     const btnLoginOpen = document.getElementById('btn-login-open');
     const btnLoginClose = document.getElementById('btn-login-close');
@@ -49,52 +48,82 @@ document.addEventListener('DOMContentLoaded', () => {
     if(loginOverlay) loginOverlay.addEventListener('click', toggleLogin);
     mobileLoginTriggers.forEach(btn => btn.addEventListener('click', toggleLogin));
 
-    console.log("Prombox JS Carregado v2.1");
+    console.log("Prombox JS Carregado v2.2 - Com Calculadora");
 });
 
+
 // ==========================================
-// 3. LÓGICA DE SELEÇÃO DE COTAS (GLOBAL)
+// 2. LÓGICA DE CÁLCULO DE COTAS (GLOBAL)
 // ==========================================
+
+// Preço unitário da cota
 const PRICE_PER_QUOTA = 0.99;
 
-// Seleciona um pacote rápido (botões)
-function selectQuota(qty, priceOverride = null) {
+/**
+ * Função: adjustManual
+ * Aumenta ou diminui a quantidade manualmente pelos botões +/-
+ * @param {number} change - Valor a adicionar (1) ou subtrair (-1)
+ */
+function adjustManual(change) {
+    const manualInput = document.getElementById('manualQty');
+    
+    if(!manualInput) return; // Segurança caso o input não exista
+
+    // Pega o valor atual, converte para inteiro e soma a mudança
+    let currentVal = parseInt(manualInput.value) || 0;
+    let newVal = currentVal + change;
+
+    // Impede números negativos ou zero
+    if(newVal < 1) newVal = 1;
+    
+    // Atualiza o input visualmente
+    manualInput.value = newVal;
+
+    // Recalcula o total
+    updateTotal();
+    
+    // Remove a seleção visual dos "pacotes" (já que agora é um valor manual)
+    document.querySelectorAll('.quota-option-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+}
+
+/**
+ * Função: selectQuota
+ * Chamada ao clicar nos cards de pacotes (05, 10, 50, 100 cotas)
+ * @param {number} qty - Quantidade do pacote
+ * @param {number} fixedPrice - (Opcional) Preço fixo se tiver desconto
+ */
+function selectQuota(qty, fixedPrice = null) {
     const manualInput = document.getElementById('manualQty');
     
     if(manualInput) {
         manualInput.value = qty;
-        updateTotal(priceOverride);
+        // Se foi passado um preço fixo, usamos ele, senão recalcula
+        updateTotal(fixedPrice);
     }
 
-    // Atualiza visual dos botões
+    // Atualiza visualmente qual card está selecionado
     document.querySelectorAll('.quota-option-card').forEach(card => {
         card.classList.remove('selected');
-        // Lógica simples para detectar qual foi clicado visualmente
-        // Em um app real, usaríamos IDs ou data-attributes
-        const cardQty = parseInt(card.querySelector('span').innerText.replace('+',''));
+        
+        // Verifica se o texto do card bate com a quantidade clicada
+        // Ex: Pega "+05", remove o "+", vira 5.
+        const cardText = card.querySelector('span').innerText.replace('+', '');
+        const cardQty = parseInt(cardText);
+        
         if(cardQty === qty) {
             card.classList.add('selected');
         }
     });
 }
 
-// Ajusta valor manualmente (+/-)
-function adjustManual(change) {
-    const manualInput = document.getElementById('manualQty');
-    if(!manualInput) return;
-
-    let newVal = parseInt(manualInput.value) + change;
-    if(newVal < 1) newVal = 1;
-    
-    manualInput.value = newVal;
-    updateTotal();
-    
-    // Remove seleção visual dos pacotes pois agora é manual
-    document.querySelectorAll('.quota-option-card').forEach(card => card.classList.remove('selected'));
-}
-
-// Atualiza o total no botão
-function updateTotal(fixedPrice = null) {
+/**
+ * Função: updateTotal
+ * Faz a matemática: Quantidade * 0.99 e atualiza o texto do botão
+ * @param {number|null} priceOverride - Se fornecido, usa esse preço em vez de calcular
+ */
+function updateTotal(priceOverride = null) {
     const manualInput = document.getElementById('manualQty');
     const btnDisplay = document.getElementById('btnTotalDisplay');
     
@@ -103,12 +132,17 @@ function updateTotal(fixedPrice = null) {
     const qty = parseInt(manualInput.value) || 1;
     let total = 0;
 
-    if (fixedPrice !== null) {
-        total = fixedPrice;
+    if (priceOverride !== null) {
+        // Se veio um preço pronto do pacote, usa ele
+        total = priceOverride;
     } else {
+        // Senão, calcula: Quantidade * R$ 0,99
         total = qty * PRICE_PER_QUOTA;
     }
 
-    // Formata para Real Brasileiro
-    btnDisplay.textContent = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    // Formata para Dinheiro Brasileiro (R$ 0,00) e atualiza o botão
+    btnDisplay.textContent = total.toLocaleString('pt-BR', { 
+        style: 'currency', 
+        currency: 'BRL' 
+    });
 }
