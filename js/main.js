@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(loginOverlay) loginOverlay.addEventListener('click', toggleLogin);
     mobileLoginTriggers.forEach(btn => btn.addEventListener('click', toggleLogin));
 
-    console.log("Prombox JS Carregado v2.2 - Com Calculadora");
+    console.log("Prombox JS Carregado v2.3 - Lógica Acumulativa");
 });
 
 
@@ -82,46 +82,47 @@ function adjustManual(change) {
     // Recalcula o total
     updateTotal();
     
-    // Remove a seleção visual dos "pacotes" (já que agora é um valor manual)
+    // Remove a seleção visual dos "pacotes" para evitar confusão visual
     document.querySelectorAll('.quota-option-card').forEach(card => {
         card.classList.remove('selected');
     });
 }
 
 /**
- * Função: selectQuota
+ * Função: selectQuota (MODO ACUMULATIVO)
  * Chamada ao clicar nos cards de pacotes (05, 10, 50, 100 cotas)
- * @param {number} qty - Quantidade do pacote
- * @param {number} fixedPrice - (Opcional) Preço fixo se tiver desconto
+ * Agora soma a quantidade clicada ao valor atual em vez de substituir.
+ * @param {number} qty - Quantidade do pacote a adicionar
+ * @param {number} fixedPrice - (Ignorado no modo acumulativo)
  */
 function selectQuota(qty, fixedPrice = null) {
     const manualInput = document.getElementById('manualQty');
     
     if(manualInput) {
-        manualInput.value = qty;
-        // Se foi passado um preço fixo, usamos ele, senão recalcula
-        updateTotal(fixedPrice);
+        // Pega o valor que já está lá (ou 0 se estiver vazio)
+        let currentQty = parseInt(manualInput.value) || 0;
+        
+        // SOMA a nova quantidade
+        let newQty = currentQty + qty;
+        
+        // Atualiza o campo
+        manualInput.value = newQty;
+        
+        // Recalcula o preço total baseando-se na nova soma
+        updateTotal();
     }
 
-    // Atualiza visualmente qual card está selecionado
+    // Efeito visual de clique rápido (feedback)
+    // Removemos a classe 'selected' fixa porque o valor agora é dinâmico
     document.querySelectorAll('.quota-option-card').forEach(card => {
         card.classList.remove('selected');
-        
-        // Verifica se o texto do card bate com a quantidade clicada
-        // Ex: Pega "+05", remove o "+", vira 5.
-        const cardText = card.querySelector('span').innerText.replace('+', '');
-        const cardQty = parseInt(cardText);
-        
-        if(cardQty === qty) {
-            card.classList.add('selected');
-        }
     });
 }
 
 /**
  * Função: updateTotal
  * Faz a matemática: Quantidade * 0.99 e atualiza o texto do botão
- * @param {number|null} priceOverride - Se fornecido, usa esse preço em vez de calcular
+ * @param {number|null} priceOverride - (Opcional) Sobrescreve o cálculo
  */
 function updateTotal(priceOverride = null) {
     const manualInput = document.getElementById('manualQty');
@@ -133,10 +134,9 @@ function updateTotal(priceOverride = null) {
     let total = 0;
 
     if (priceOverride !== null) {
-        // Se veio um preço pronto do pacote, usa ele
         total = priceOverride;
     } else {
-        // Senão, calcula: Quantidade * R$ 0,99
+        // Cálculo padrão: Qtd * Preço Unitário
         total = qty * PRICE_PER_QUOTA;
     }
 
